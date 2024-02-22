@@ -1,15 +1,17 @@
+import { auth } from "../assets/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 export default async function loginUser(email, password) {
-  console.log(email, password);
-  return;
   try {
-    const userCredential = await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     const user = userCredential.user;
-    console.log("User logged in successfully:", user.uid);
+    return "Logged In Successfully";
   } catch (error) {
-    const errorCode = error.code;
     const errorMessage = error.message;
-    console.error("Error logging in user:", errorCode, errorMessage);
+    throw new Error(`"Error logging in user: ${errorMessage}`);
   }
 }
