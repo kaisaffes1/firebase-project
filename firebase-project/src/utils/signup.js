@@ -3,6 +3,7 @@ import { auth } from "../assets/firebase";
 import createEmptyUserDoc from "./createEmptyUserDoc";
 
 export default async function createUser(email, password) {
+  console.log(email, password);
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -10,12 +11,9 @@ export default async function createUser(email, password) {
       password
     );
     const user = userCredential.user;
-    console.log("User created successfully:", user);
-    await createEmptyUserDoc(user.uid);
+    await createEmptyUserDoc(user.uid, user.email);
     return "User created successfully";
   } catch (error) {
-    console.log(error.message);
-    const errorCode = error.code;
     const errorMessage = error.message;
     throw new Error(`Error creating user: ${errorMessage}`);
   }

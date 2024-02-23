@@ -1,4 +1,3 @@
-import { getDownloadURL, getMetadata } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../assets/firebase";
 export default async function recordFile(
@@ -17,7 +16,6 @@ export default async function recordFile(
           downloadURL,
         },
       },
-      receivedFiles: [], //to remove
     };
     await setDoc(userDoc, userData, { merge: true });
     return true;

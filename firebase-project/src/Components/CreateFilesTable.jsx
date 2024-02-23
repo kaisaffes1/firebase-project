@@ -1,5 +1,14 @@
 import { Link } from "react-router-dom";
-const tableColHeading = ["SeqNo.", "filename", "type", "size", "preview"];
+import mimeToExtension from "../assets/mimeToExtenstion";
+import convertToKbs from "../assets/convertToKbs";
+const tableColHeading = [
+  "SeqNo.",
+  "filename",
+  "type",
+  "size (in KBs)",
+  "preview",
+];
+const isHomePage = () => location.pathname == "/";
 export default function CreateFilesTable({ files, updateFileToShare }) {
   const data = Array.from(Object.entries(files));
 
@@ -9,9 +18,10 @@ export default function CreateFilesTable({ files, updateFileToShare }) {
   };
 
   return (
-    <table className=" w-[95%] border m-2 max-w-[1000px] mx-auto overflow-x-scroll">
+    <table className="w-[95%] border m-2 max-w-[1000px] mx-auto overflow-x-scroll">
       <thead>
         <tr>
+          {isHomePage() && <th>Share</th>}
           {tableColHeading.map((heading, index) => (
             <th key={index} className="text-center">
               {heading}
@@ -23,12 +33,25 @@ export default function CreateFilesTable({ files, updateFileToShare }) {
         {data.map((file, index) => {
           const metaData = file[1].metadata;
           return (
-            <tr className="group/tr relative h-8">
+            <tr key={index} className="h-8 hover:bg-black/10">
+              {isHomePage() && (
+                <td className="w-[30px]">
+                  <button
+                    className="mx-2 rounded-full bg-blue-300 px-2 text-xs hover:bg-blue-400 active:scale-90"
+                    onClick={() => {
+                      showSharesForm();
+                      updateFileToShare(metaData.name);
+                    }}
+                  >
+                    share
+                  </button>
+                </td>
+              )}
               {[
                 index + 1,
                 metaData.name,
-                metaData.contentType,
-                metaData.size,
+                mimeToExtension[metaData.contentType],
+                convertToKbs(metaData.size),
                 <Link
                   to={file[1].downloadURL}
                   target="blank"
@@ -37,19 +60,10 @@ export default function CreateFilesTable({ files, updateFileToShare }) {
                   url
                 </Link>,
               ].map((cell) => (
-                <td className="text-center first:font-semibold">{cell}</td>
+                <td key={cell} className="text-center first:font-semibold">
+                  {cell}
+                </td>
               ))}
-              <td className="absolute left-1  font-semibold whitespace-nowrap rounded-full bg-blue-300 px-2 text-sm scale-0 group-hover/tr:scale-100 transition-all duration-100">
-                <button
-                  onClick={() => {
-                    showSharesForm();
-                    updateFileToShare(metaData.name);
-                  }}
-                >
-                  {" "}
-                  share{" "}
-                </button>
-              </td>
             </tr>
           );
         })}

@@ -9,7 +9,7 @@ const isSignupPage = () => location.pathname.split("/").pop() == "signup";
 export default function Auth() {
   const navigate = useNavigate();
   const { mutate, isPending, isSuccess, isError, error, data } = useMutation({
-    mutationKey: ["login"],
+    mutationKey: ["auth"],
     mutationFn: handleSubmit,
   });
   async function handleSubmit(event) {
@@ -19,7 +19,7 @@ export default function Auth() {
     const password = formData.get("password");
     try {
       const response = isSignupPage()
-        ? await createUser()
+        ? await createUser(email, password)
         : await loginUser(email, password);
       return response;
     } catch (err) {

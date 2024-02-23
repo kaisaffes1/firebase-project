@@ -3,6 +3,7 @@ import AuthRoutes from "./AuthRoutes";
 import Home from "../Pages/Home";
 import Layout from "../Components/Layout";
 import Receives from "../Pages/Receives";
+import Shares from "../Pages/Shares";
 
 export default function Routes() {
   return useRoutes([
@@ -20,7 +21,7 @@ export default function Routes() {
         },
         {
           path: "/shares",
-          element: <h1>Share goes here</h1>,
+          element: <Shares />,
         },
       ],
     },

@@ -8,21 +8,26 @@ export default async function uploadFile(file, user, progressUpdate) {
 
   const uploadTask = uploadBytesResumable(storageRef, file);
 
-  uploadTask.on(
-    "state_changed",
-    (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      progressUpdate(progress);
-    },
-    (error) => {
-      //onerror
-      throw error;
-    },
-    async () => {
-      //onsuccess
-      const metadata = (await uploadTask).metadata;
-      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-      await recordFile(file.name, downloadURL, metadata, user.uid);
-    }
-  );
+  // Wrap the upload task in a Promise
+  return new Promise((resolve, reject) => {
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        progressUpdate(progress);
+      },
+      (error) => {
+        // On error, reject the Promise
+        reject(error);
+      },
+      async () => {
+        // On success, resolve the Promise
+        const metadata = (await uploadTask).metadata;
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        await recordFile(file.name, downloadURL, metadata, user.uid);
+        resolve();
+      }
+    );
+  });
 }

@@ -1,7 +1,8 @@
 import { useUser } from "../Hooks/UserProvider";
 import Button from "./Button";
 import signOutUser from "../utils/signout";
-import SharesRecevies from "./SharesRecevies";
+import Menu from "./Menu";
+import Notifications from "./Notifications";
 
 export default function Navbar() {
   const user = useUser();
@@ -11,15 +12,23 @@ export default function Navbar() {
     box.showModal();
   };
 
+  const showNotifications = () => {
+    const box = document.querySelector(".notificaions-box");
+    box.classList.toggle("scale-0");
+  };
   return (
     <div>
       <nav className=" sticky px-2 w-screen h-[60px] bg-blue-500 text-white flex items-center justify-between ">
-        <h1>File Sharing</h1>
+        <h1 className=" font-semibold text-xl ml-3">File Sharing</h1>
         <div>
           {user ? (
             <div className=" flex items-center gap-2">
-              <div className="bg-blue-400 rounded-full p-2">
+              <div
+                onClick={showNotifications}
+                className="relative bg-blue-400 rounded-full p-2"
+              >
                 <img className=" w-4" src="/bell-regular.svg" alt="bell" />
+                <Notifications />
               </div>
               <button
                 onClick={showUploader}
@@ -44,7 +53,7 @@ export default function Navbar() {
           )}
         </div>
       </nav>
-      <SharesRecevies />
+      <Menu />
     </div>
   );
 }
