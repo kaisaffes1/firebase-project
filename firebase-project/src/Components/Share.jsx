@@ -115,13 +115,10 @@ export default function Share({ fileToShare }) {
             {data.length &&
               (searchedUsers ? searchedUsers : data).map(
                 ({ email, userId }) => {
-                  if (userId == user.uid) return;
-                  // if (
-                  //   targetFileShares.data.receivers
-                  //     .map((e) => e.receiverName)
-                  //     .includes(email)
-                  // )
-                  //   return;
+                  const emailHasThisFile = targetFileShares.data.receivers
+                    .map((e) => e.receiverName)
+                    .includes(email);
+                  if (userId == user.uid || emailHasThisFile) return;
                   const isUserInShared = userToSharewith.includes(email);
                   return (
                     <label

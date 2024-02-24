@@ -24,7 +24,7 @@ export default function FilesList({ files, updateFileToShare }) {
                 preview
               </div>
               <div className=" border w-full md:h-full flex gap-2 flex-col md:justify-between p-3">
-                <div className="flex justify-around md:block">
+                <div className="sm:flex justify-around md:block">
                   {[
                     ["size", convertToKbs(metadata.size)],
                     ["created on", metadata.timeCreated],
