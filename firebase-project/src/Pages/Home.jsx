@@ -8,6 +8,7 @@ import LoginRequired from "../Components/LoginRequired";
 import Loader from "../Components/Loader";
 import NoResult from "../Components/NoResult";
 import Error from "../Components/Error";
+import FilesList from "../Components/FilesList";
 export default function Home() {
   const [fileToShare, setFileToShare] = useState(null);
   const user = useUser();
@@ -17,7 +18,6 @@ export default function Home() {
     queryFn: () => (user ? getUserFiles(user.uid) : null),
     enabled: !!user,
   });
-  const updateFileToShare = (fileName) => setFileToShare(fileName);
   if (!user) return <LoginRequired message="Login to see your uploads" />;
   else if (isPending) return <Loader />;
   else if (isError) return <Error error={error} />;
@@ -25,9 +25,10 @@ export default function Home() {
     return <NoResult message="You have no Uploads" />;
   return (
     isSuccess && (
-      <div className="narrow-scroller overflow-x-auto">
+      <div className="narrow-scroller overflow-x-auto my-6">
+        <FilesList files={data} updateFileToShare={setFileToShare} />
         <Share fileToShare={fileToShare} />
-        <CreateFilesTable updateFileToShare={updateFileToShare} files={data} />
+        {/* <CreateFilesTable updateFileToShare={setFileToShare} files={data} /> */}
       </div>
     )
   );

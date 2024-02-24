@@ -3,9 +3,11 @@ import Button from "./Button";
 import signOutUser from "../utils/signout";
 import Menu from "./Menu";
 import Notifications from "./Notifications";
+import { useState } from "react";
 
 export default function Navbar() {
   const user = useUser();
+  const [numberOfNotifications, setNumberofNotifications] = useState(null);
 
   const showUploader = () => {
     const box = document.querySelector("#upload-box");
@@ -18,7 +20,7 @@ export default function Navbar() {
   };
   return (
     <div>
-      <nav className=" sticky px-2 w-screen h-[60px] bg-blue-500 text-white flex items-center justify-between ">
+      <nav className=" sticky px-2 w-full h-[60px] bg-blue-500 text-white flex items-center justify-between ">
         <h1 className=" font-semibold text-xl ml-3">File Sharing</h1>
         <div>
           {user ? (
@@ -28,7 +30,14 @@ export default function Navbar() {
                 className="relative bg-blue-400 rounded-full p-2"
               >
                 <img className=" w-4" src="/bell-regular.svg" alt="bell" />
-                <Notifications />
+                {numberOfNotifications && (
+                  <span className=" absolute w-4 -top-1 -right-1 aspect-square  flex items-center justify-center text-[9px] rounded-full bg-red-600 text-white ">
+                    {numberOfNotifications}
+                  </span>
+                )}
+                <Notifications
+                  updateNumberofNotifications={setNumberofNotifications}
+                />
               </div>
               <button
                 onClick={showUploader}

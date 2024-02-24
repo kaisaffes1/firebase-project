@@ -1,4 +1,4 @@
-import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { doc, runTransaction } from "firebase/firestore";
 import { db } from "../assets/firebase";
 
 export default async function updateSharedFiles(
@@ -8,18 +8,24 @@ export default async function updateSharedFiles(
   receiverUid
 ) {
   const userDoc = doc(db, "users", userId);
-  const userSnapshot = await getDoc(userDoc);
-  const userData = userSnapshot.data();
-  const shares = userData?.shares || {};
-  const sharedFile = shares[fileId] || { receivers: [] };
-  sharedFile.receivers.push({
-    receiverName,
-    receiverUid,
-  });
 
-  shares[fileId] = sharedFile;
+  await runTransaction(db, async (transaction) => {
+    const userSnapshot = await transaction.get(userDoc);
+    if (!userSnapshot.exists()) {
+      throw "Document does not exist!";
+    }
 
-  await updateDoc(userDoc, {
-    shares: shares,
+    const userData = userSnapshot.data();
+    const shares = userData?.shares || {};
+    const sharedFile = shares[fileId] || { receivers: [] };
+
+    sharedFile.receivers.push({
+      receiverName,
+      receiverUid,
+    });
+
+    shares[fileId] = sharedFile;
+
+    transaction.update(userDoc, { shares: shares });
   });
 }

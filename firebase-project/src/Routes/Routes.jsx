@@ -19,10 +19,6 @@ export default function Routes() {
           path: "/receives",
           element: <Receives />,
         },
-        {
-          path: "/shares",
-          element: <Shares />,
-        },
       ],
     },
     {

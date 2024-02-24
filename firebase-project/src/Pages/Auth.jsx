@@ -17,9 +17,10 @@ export default function Auth() {
     const formData = new FormData(event.target);
     const email = formData.get("email");
     const password = formData.get("password");
+    const username = formData.get("username");
     try {
       const response = isSignupPage()
-        ? await createUser(email, password)
+        ? await createUser(email, password, username)
         : await loginUser(email, password);
       return response;
     } catch (err) {
@@ -45,6 +46,17 @@ export default function Auth() {
         </h2>
       )}
 
+      {isSignupPage() && (
+        <div className="input-container">
+          <input
+            type="text"
+            name="username"
+            placeholder="Enter Username"
+            required
+          />
+          <span></span>
+        </div>
+      )}
       <div className="input-container">
         <input type="email" name="email" placeholder="Enter email" required />
         <span></span>

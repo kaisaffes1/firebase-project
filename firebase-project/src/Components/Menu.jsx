@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 export default function Menu() {
   return (
     <div className="w-full my-1 px-2  flex flex-col sm:flex-row justify-center items-center gap-1">
-      {["My Files", "receives", "Shares"].map((el) => (
+      {["My Files", "receives"].map((el) => (
         <Link
           key={el}
           to={el == "My Files" ? "/" : `./${el.toLocaleLowerCase()}`}

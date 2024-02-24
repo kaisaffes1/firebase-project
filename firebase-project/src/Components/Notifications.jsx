@@ -3,10 +3,15 @@ import { useUser } from "../Hooks/UserProvider";
 import getUnreadMessages from "../utils/getUnreadMessages";
 import markNotificationAsRead from "../utils/markAsRead";
 
-export default function Notifications() {
+export default function Notifications({ updateNumberofNotifications }) {
   const user = useUser();
   const [notifications, setNotifications] = useState(null);
   const [error, setError] = useState(null);
+  useEffect(() => {
+    notifications?.length
+      ? updateNumberofNotifications(notifications.length)
+      : updateNumberofNotifications(null);
+  }, [notifications]);
 
   useEffect(() => {
     if (user) {
