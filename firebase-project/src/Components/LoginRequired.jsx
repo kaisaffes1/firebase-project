@@ -8,7 +8,7 @@ export default function LoginRequired({ message }) {
         to="/auth/login"
         className=" w-[90%] max-w-[400px] text-center py-2 rounded text-lg font-semibold border-2 border-[#4F46E5]"
       >
-        Signup
+        Sign In
       </Link>
     </div>
   );

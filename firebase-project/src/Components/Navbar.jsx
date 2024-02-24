@@ -1,5 +1,5 @@
+import { Link } from "react-router-dom";
 import { useUser } from "../Hooks/UserProvider";
-import Button from "./Button";
 import signOutUser from "../utils/signout";
 import Menu from "./Menu";
 import Notifications from "./Notifications";
@@ -14,7 +14,7 @@ export default function Navbar() {
     box.showModal();
   };
 
-  const showNotifications = () => {
+  const toggleNotifications = () => {
     const box = document.querySelector(".notificaions-box");
     box.classList.toggle("scale-0");
   };
@@ -25,11 +25,13 @@ export default function Navbar() {
         <div>
           {user ? (
             <div className=" flex items-center gap-2">
-              <div
-                onClick={showNotifications}
-                className="relative bg-blue-400 rounded-full p-2"
-              >
-                <img className=" w-4" src="/bell-regular.svg" alt="bell" />
+              <div className="relative bg-blue-400 rounded-full border-2 p-2">
+                <img
+                  onClick={toggleNotifications}
+                  className=" w-4"
+                  src="/bell-regular.svg"
+                  alt="bell"
+                />
                 {numberOfNotifications && (
                   <span className=" absolute w-4 -top-1 -right-1 aspect-square  flex items-center justify-center text-[9px] rounded-full bg-red-600 text-white ">
                     {numberOfNotifications}
@@ -58,7 +60,12 @@ export default function Navbar() {
               </div>
             </div>
           ) : (
-            <Button text="Sign Up" link="./auth/login" />
+            <Link
+              to="/auth/login"
+              className="px-4 py-2 rounded font-medium text-white bg-[#4F46E5]"
+            >
+              Sign In
+            </Link>
           )}
         </div>
       </nav>
