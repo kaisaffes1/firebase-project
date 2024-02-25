@@ -15,19 +15,19 @@ export default function FilesList({ files, updateFileToShare }) {
       {data.map(([title, file]) => {
         const { metadata } = file;
         return (
-          <details className="group open:bg-white open:shadow-lg my-1 rounded-lg">
+          <details className="group open:bg-white open:shadow-lg my-3 rounded-lg">
             <summary className="text-sm leading-6 text-slate-900 font-semibold select-none border group-open:text-lg group-open:border-none rounded p-2">
               {metadata.name}
             </summary>
             <div className="mx-3 text-sm h-[300px] sm:h-[200px] p-3 flex flex-col md:flex-row items-center gap-3">
               <div className="w-full md:h-full md:w-auto aspect-square border">
-                preview
+                <iframe src={file.downloadURL} width="192" height="176" />
               </div>
-              <div className=" border w-full md:h-full flex gap-2 flex-col md:justify-between p-3">
+              <div className="border w-full md:h-full flex gap-2 flex-col md:justify-between p-3">
                 <div className="sm:flex justify-around md:block">
                   {[
-                    ["size", convertToKbs(metadata.size)],
-                    ["created on", metadata.timeCreated],
+                    ["Size", convertToKbs(metadata.size)],
+                    ["Created at", metadata.timeCreated.split('T').join(' ')],
                   ].map(([key, value]) => (
                     <p className="text-base">
                       {key}: <span className="text-xs">{value}</span>
